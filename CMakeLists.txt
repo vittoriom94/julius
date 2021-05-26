@@ -288,6 +288,7 @@ set(BUILDING_FILES
     ${PROJECT_SOURCE_DIR}/src/building/roadblock.c
     ${PROJECT_SOURCE_DIR}/src/building/rotation.c
     ${PROJECT_SOURCE_DIR}/src/building/storage.c
+    ${PROJECT_SOURCE_DIR}/src/building/surveyors_post.c
     ${PROJECT_SOURCE_DIR}/src/building/tavern.c
     ${PROJECT_SOURCE_DIR}/src/building/temple.c
     ${PROJECT_SOURCE_DIR}/src/building/warehouse.c

@@ -24,6 +24,8 @@ void window_building_handle_mouse_supplier_orders(const mouse* m, building_info_
 
 void window_building_draw_mess_hall(building_info_context* c);
 
+void window_building_draw_surveyors_post(building_info_context *c);
+
 void window_building_draw_granary(building_info_context *c);
 void window_building_draw_granary_foreground(building_info_context *c);
 void window_building_draw_granary_orders(building_info_context *c);

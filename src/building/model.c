@@ -186,6 +186,7 @@ int model_load(void)
 
 const model_building MODEL_ROADBLOCK = { 40,0,0,0,0 };
 const model_building MODEL_WORK_CAMP = { 150,-10,2,3,4,20 };
+const model_building MODEL_SURVEYORS_POST = { 50,-2,1,1,2,5 };
 const model_building MODEL_ARCHITECT_GUILD = { 200,-8,1,2,4,12 };
 const model_building MODEL_GRAND_TEMPLE_CERES = { 2500,20,2,-4,5,50 };
 const model_building MODEL_GRAND_TEMPLE_NEPTUNE = { 2500,20,2,-4,5,50 };
@@ -215,6 +216,8 @@ const model_building *model_get_building(building_type type)
             return &MODEL_ROADBLOCK;
         case BUILDING_WORKCAMP:
             return &MODEL_WORK_CAMP;
+        case BUILDING_SURVEYORS_POST:
+            return &MODEL_SURVEYORS_POST;
         case BUILDING_ARCHITECT_GUILD:
             return &MODEL_ARCHITECT_GUILD;
         case BUILDING_GRAND_TEMPLE_CERES:

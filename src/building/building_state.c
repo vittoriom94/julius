@@ -14,7 +14,7 @@ static int is_industry_type(const building *b)
 static void write_type_data(buffer *buf, const building *b)
 {
     if (building_is_house(b->type)) {
-        for (int i = 0; i < INVENTORY_MAX; i++) {
+        for (int i = 0; i < INVENTORY_MAX_GOOD; i++) {
             buffer_write_i16(buf, b->data.house.inventory[i]);
         }
         buffer_write_u8(buf, b->data.house.theater);
@@ -55,7 +55,7 @@ static void write_type_data(buffer *buf, const building *b)
         buffer_write_u8(buf, b->data.market.fetch_inventory_id);
     } else if (building_has_supplier_inventory(b->type)) {
         buffer_write_i16(buf, 0);
-        for (int i = 0; i < INVENTORY_MAX; i++) {
+        for (int i = 0; i < INVENTORY_MAX_GOOD; i++) {
             buffer_write_i16(buf, b->data.market.inventory[i]);
         }
         buffer_write_i16(buf, b->data.market.pottery_demand);
@@ -215,6 +215,23 @@ void building_state_save_to_buffer(buffer *buf, const building *b)
     //strikes
     buffer_write_u8(buf, b->strike_duration_days);
 
+    // House evolution
+    if (building_is_house(b->type)) {
+        for (int i = INVENTORY_MAX_GOOD; i < INVENTORY_MAX; i++) {
+            buffer_write_i16(buf, b->data.house.inventory[i]);
+        }
+        buffer_write_u8(buf, b->data.house.evolution_percentage);
+    } else if (building_has_supplier_inventory(b->type)) {
+        for (int i = INVENTORY_MAX_GOOD; i < INVENTORY_MAX; i++) {
+            buffer_write_i16(buf, b->data.market.inventory[i]);
+        }
+        buffer_write_u8(buf, 0);
+    } else {
+        for (int i = INVENTORY_MAX_GOOD; i < INVENTORY_MAX; i++) {
+            buffer_write_i16(buf, 0);
+        }
+        buffer_write_u8(buf, 0);
+    }
     // New building state code should always be added at the end to preserve savegame retrocompatibility
     // Also, don't forget to update BUILDING_STATE_CURRENT_BUFFER_SIZE and if possible, add a new macro like
     // BUILDING_STATE_NEW_FEATURE_BUFFER_SIZE with the full building state buffer size including all added features
@@ -224,7 +241,7 @@ void building_state_save_to_buffer(buffer *buf, const building *b)
 static void read_type_data(buffer *buf, building *b)
 {
     if (building_is_house(b->type)) {
-        for (int i = 0; i < INVENTORY_MAX; i++) {
+        for (int i = 0; i < INVENTORY_MAX_GOOD; i++) {
             b->data.house.inventory[i] = buffer_read_i16(buf);
         }
         b->data.house.theater = buffer_read_u8(buf);
@@ -265,7 +282,7 @@ static void read_type_data(buffer *buf, building *b)
         b->data.market.fetch_inventory_id = buffer_read_u8(buf);
     } else if (building_has_supplier_inventory(b->type)) {
         buffer_skip(buf, 2);
-        for (int i = 0; i < INVENTORY_MAX; i++) {
+        for (int i = 0; i < INVENTORY_MAX_GOOD; i++) {
             b->data.market.inventory[i] = buffer_read_i16(buf);
         }
         b->data.market.pottery_demand = buffer_read_i16(buf);
@@ -443,6 +460,26 @@ void building_state_load_from_buffer(buffer *buf, building *b, int building_buf_
 
     if (building_buf_size >= BUILDING_STATE_STRIKES) {
         b->strike_duration_days = buffer_read_u8(buf);
+    }
+    
+    if (building_buf_size >= BUILDING_STATE_EVOLUTION) {
+            // House evolution
+        if (building_is_house(b->type)) {
+            for (int i = INVENTORY_MAX_GOOD; i < INVENTORY_MAX; i++) {
+                b->data.house.inventory[i] = buffer_read_i16(buf);
+            }
+            b->data.house.evolution_percentage = buffer_read_u8(buf);
+        } else if (building_has_supplier_inventory(b->type)) {
+            for (int i = INVENTORY_MAX_GOOD; i < INVENTORY_MAX; i++) {
+                b->data.market.inventory[i] = buffer_read_i16(buf);
+            }
+            buffer_skip(buf, 1);
+        } else {
+            for (int i = INVENTORY_MAX_GOOD; i < INVENTORY_MAX; i++) {
+                buffer_skip(buf, 2);
+            }
+            buffer_skip(buf, 1);
+        }
     }
 
     // The following code should only be executed if the savegame includes building information that is not 

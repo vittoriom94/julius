@@ -662,6 +662,9 @@ static void add_to_map(int type, building *b, int size,
                     break;
             }
             break;
+        case BUILDING_SURVEYORS_POST:
+            add_building(b, assets_get_image_id(assets_get_group_id("Areldir", "Workcamps"), "Surveyors Post OFF"));
+            break;
         case BUILDING_ARCHITECT_GUILD:
             add_building(b, assets_get_image_id(assets_get_group_id("Areldir", "Architect"), "Arch Guild ON"));
             break;

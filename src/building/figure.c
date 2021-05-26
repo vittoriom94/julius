@@ -1551,6 +1551,64 @@ static void spawn_figure_work_camp(building *b)
     }
 }
 
+
+static void spawn_surveyors_post_supplier(building *b, int x, int y)
+{
+    if (b->figure_id2) {
+        figure *f = figure_get(b->figure_id2);
+        if (f->state != FIGURE_STATE_ALIVE || (f->type != FIGURE_SURVEYORS_POST_SUPPLIER && f->type != FIGURE_LABOR_SEEKER)) {
+            b->figure_id2 = 0;
+        }
+        return;
+    }
+    //building_distribution_update_demands(b);
+    int dst_building_id = 0; //building_market_get_storage_destination(b);
+    if (dst_building_id == 0) {
+        return;
+    }
+    figure *f = figure_create(FIGURE_SURVEYORS_POST_SUPPLIER, x, y, DIR_0_TOP);
+    f->building_id = b->id;
+    b->figure_id2 = f->id;
+    f->collecting_item_id = b->data.market.fetch_inventory_id;
+    send_supplier_to_destination(f, dst_building_id);
+}
+
+static void spawn_figure_surveyors_post(building *b)
+{
+    // set_market_graphic(b);
+    check_labor_problem(b);
+    map_point road;
+    if (map_has_road_access(b->x, b->y, b->size, &road)) {
+        spawn_labor_seeker(b, road.x, road.y, 50);
+        int pct_workers = worker_percentage(b);
+        int spawn_delay;
+        if (pct_workers >= 100) {
+            spawn_delay = 2;
+        } else if (pct_workers >= 75) {
+            spawn_delay = 5;
+        } else if (pct_workers >= 50) {
+            spawn_delay = 10;
+        } else if (pct_workers >= 25) {
+            spawn_delay = 20;
+        } else if (pct_workers >= 1) {
+            spawn_delay = 30;
+        } else {
+            return;
+        }
+        // surveyors post trader
+        if (!has_figure_of_type(b, FIGURE_SURVEYORS_POST_TRADER)) {
+            b->figure_spawn_delay++;
+            if (b->figure_spawn_delay <= spawn_delay) {
+                return;
+            }
+            b->figure_spawn_delay = 0;
+            create_roaming_figure(b, road.x, road.y, FIGURE_SURVEYORS_POST_TRADER);
+        }
+        // surveyors post supplier or labor seeker
+        spawn_surveyors_post_supplier(b, road.x, road.y);
+    }
+}
+
 static void spawn_figure_architect_guild(building *b)
 {
     check_labor_problem(b);
@@ -1829,6 +1887,9 @@ void building_figure_generate(void)
                     break;
                 case BUILDING_WORKCAMP:
                     spawn_figure_work_camp(b);
+                    break;
+                case BUILDING_SURVEYORS_POST:
+                    spawn_figure_surveyors_post(b);
                     break;
                 case BUILDING_ARCHITECT_GUILD:
                     spawn_figure_architect_guild(b);

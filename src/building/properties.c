@@ -4,11 +4,12 @@
 #include "core/image_group.h" 
 #include "type.h"
 
-#define AUGUSTUS_BUILDINGS 57
+#define AUGUSTUS_BUILDINGS 58
 
 augustus_building_properties_mapping augustus_building_properties[AUGUSTUS_BUILDINGS] = {
     {BUILDING_ROADBLOCK, { 1, 1, 0, 0, 0 },  "Areldir", "Roadblocks", 0},
     {BUILDING_WORKCAMP, { 3, 0, 0, 0, 0 },  "Areldir", "Workcamps", "Workcamp Central"},
+    {BUILDING_SURVEYORS_POST, { 1, 0, 0, 0, 0 },  "Areldir", "Workcamps", "Surveyors Post OFF"},
     {BUILDING_GRAND_TEMPLE_CERES, { 7, 1, 0, 0, 0 },  "Areldir", "Ceres_Temple", "Ceres Complex Off"},
     {BUILDING_GRAND_TEMPLE_NEPTUNE, { 7, 1, 0, 0, 0 },  "Areldir", "Neptune_Temple", "Neptune Complex Off"},
     {BUILDING_GRAND_TEMPLE_MERCURY, { 7, 1, 0, 0, 0 },  "Areldir", "Mercury_Temple", "Mercury Complex Off"},

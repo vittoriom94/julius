@@ -66,6 +66,27 @@ int building_distribution_fetch(const building *b, inventory_storage_info *info,
     return inventory;
 }
 
+int building_distribution_fetch_inventory(const building *b, inventory_storage_info *info,
+    int min_stock, int pick_first, int allowed, const int inventory_search[], int inventory_size)
+{
+    int inventory = INVENTORY_NONE;
+    if (!min_stock) {
+        min_stock = 1;
+    }
+    for (int i = 0; i < inventory_size; i++) {
+        int current_inventory = inventory_search[i];
+        if (inventory_is_set(allowed, current_inventory) &&
+            info[current_inventory].building_id && b->data.market.inventory[current_inventory] < min_stock) {
+            if (pick_first) {
+                return current_inventory;
+            }
+            min_stock = b->data.market.inventory[current_inventory];
+            inventory = current_inventory;
+        }
+    }
+    return inventory;
+}
+
 static void update_food_resource(inventory_storage_info *info, resource_type resource, const building *b, int distance)
 {
     if (distance < info->min_distance && b->data.granary.resource_stored[resource]) {
@@ -129,6 +150,12 @@ int building_distribution_get_inventory_storages(inventory_storage_info *info, b
         update_good_resource(&info[INVENTORY_OIL], RESOURCE_OIL, b, distance);
         update_good_resource(&info[INVENTORY_POTTERY], RESOURCE_POTTERY, b, distance);
         update_good_resource(&info[INVENTORY_FURNITURE], RESOURCE_FURNITURE, b, distance);
+
+        update_good_resource(&info[INVENTORY_CLAY], RESOURCE_CLAY, b, distance);
+        update_good_resource(&info[INVENTORY_TIMBER], RESOURCE_TIMBER, b, distance);
+        update_good_resource(&info[INVENTORY_IRON], RESOURCE_IRON, b, distance);
+        update_good_resource(&info[INVENTORY_MARBLE], RESOURCE_MARBLE, b, distance);
+
     }
 
     for (int i = 0; i < INVENTORY_MAX; i++) {

@@ -156,6 +156,7 @@ static int get_height_id(void)
             case BUILDING_FURNITURE_WORKSHOP:
             case BUILDING_POTTERY_WORKSHOP:
             case BUILDING_WORKCAMP:
+            case BUILDING_SURVEYORS_POST:
             case BUILDING_ARCHITECT_GUILD:
             case BUILDING_OBELISK:
             case BUILDING_TAVERN:
@@ -630,6 +631,12 @@ static void draw_background(void)
             window_building_draw_large_mausoleum(&context);
         } else if (btype == BUILDING_WORKCAMP) {
             window_building_draw_work_camp(&context);
+        } else if (btype == BUILDING_SURVEYORS_POST) {
+            if (context.storage_show_special_orders) {
+                window_building_draw_supplier_orders(&context, translation_for(TR_SURVEYORS_POST_SPECIAL_ORDERS_HEADER));
+            } else {
+                window_building_draw_surveyors_post(&context);
+            }
         } else if (btype == BUILDING_ARCHITECT_GUILD) {
             window_building_draw_architect_guild(&context);
         } else if (btype == BUILDING_MESS_HALL) {
@@ -774,6 +781,12 @@ static void draw_foreground(void)
                 window_building_supplier_draw_foreground(&context);
             }
         } else if (btype == BUILDING_MESS_HALL) {
+            if (context.storage_show_special_orders) {
+                window_building_draw_supplier_orders_foreground(&context);
+            } else {
+                window_building_supplier_draw_foreground(&context);
+            }
+        } else if (btype == BUILDING_SURVEYORS_POST) {
             if (context.storage_show_special_orders) {
                 window_building_draw_supplier_orders_foreground(&context);
             } else {

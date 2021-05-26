@@ -90,6 +90,7 @@ static roadblock_permission get_permission_for_figure_type(figure* f)
         return PERMISSION_PRIEST;
         break;
     case FIGURE_MARKET_TRADER:
+    case FIGURE_SURVEYORS_POST_TRADER:
         return PERMISSION_MARKET;
         break;
     case FIGURE_GLADIATOR:

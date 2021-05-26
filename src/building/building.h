@@ -83,7 +83,7 @@ typedef struct building {
             int accepted_route_ids;
         } dock;
         struct {
-            short inventory[8];
+            short inventory[12];
             short pottery_demand;
             short furniture_demand;
             short oil_demand;
@@ -110,7 +110,7 @@ typedef struct building {
             unsigned char play;
         } entertainment;
         struct {
-            short inventory[8];
+            short inventory[12];
             unsigned char theater;
             unsigned char amphitheater_actor;
             unsigned char amphitheater_gladiator;
@@ -137,6 +137,7 @@ typedef struct building {
             unsigned char num_gods;
             unsigned char devolve_delay;
             unsigned char evolve_text_id;
+            unsigned char evolution_percentage;
         } house;
         struct {
             short resources_needed[16];

@@ -488,7 +488,13 @@ static int get_allowed_inventory_for_supplier(building_type type)
     int allowed = INVENTORY_FLAG_NONE;
     switch (type) {
         case BUILDING_MARKET:
-            return INVENTORY_FLAG_ALL;
+            return 0x000 & INVENTORY_FLAG_ALL_FOODS | INVENTORY_FLAG_ALL_GOODS;
+        case BUILDING_SURVEYORS_POST:
+            inventory_set(&allowed, INVENTORY_CLAY);
+            inventory_set(&allowed, INVENTORY_TIMBER);
+            inventory_set(&allowed, INVENTORY_IRON);
+            inventory_set(&allowed, INVENTORY_MARBLE);
+            return allowed;
         case BUILDING_CARAVANSERAI:
         case BUILDING_MESS_HALL:
             return INVENTORY_FLAG_ALL_FOODS;
@@ -1148,6 +1154,52 @@ void window_building_draw_mess_hall(building_info_context *c)
 
     inner_panel_draw(c->x_offset + 16, c->y_offset + 308, c->width_blocks - 2, 4);
     window_building_draw_employment(c, 308);
+    window_building_supplier_draw_foreground(c);
+}
+
+void window_building_draw_surveyors_post(building_info_context *c)
+{
+    building *b = building_get(c->building_id);
+
+    window_building_play_sound(c, "wavs/eng_post.wav");
+    outer_panel_draw(c->x_offset, c->y_offset, c->width_blocks, c->height_blocks);
+
+    text_draw_centered(translation_for(TR_BUILDING_SURVEYORS_POST),
+        c->x_offset, c->y_offset + 10, 16 * c->width_blocks, FONT_LARGE_BLACK, 0);
+    text_draw_multiline(translation_for(TR_BUILDING_SURVEYORS_POST_DESC), c->x_offset + 32, c->y_offset + 96, 16 * (c->width_blocks - 4), FONT_NORMAL_BLACK, 0);
+    if (!c->has_road_access) {
+        window_building_draw_description(c, 69, 25);
+    } else if (b->num_workers <= 0) {
+        window_building_draw_description(c, 97, 2);
+    } else {
+        font_t font = building_distribution_is_good_accepted(INVENTORY_CLAY, b) ? FONT_NORMAL_BLACK : FONT_NORMAL_RED;
+        int image_id = image_group(GROUP_RESOURCE_ICONS);;
+        int position = 44;
+        image_draw(image_id + RESOURCE_CLAY, c->x_offset + 32, c->y_offset + position);
+        text_draw_number(b->data.market.inventory[INVENTORY_CLAY], '@', " ",
+            c->x_offset + 64, c->y_offset + position + 6, font);
+
+        font = building_distribution_is_good_accepted(INVENTORY_TIMBER, b) ? FONT_NORMAL_BLACK : FONT_NORMAL_RED;
+        image_draw(image_id + RESOURCE_TIMBER, c->x_offset + 142, c->y_offset + position);
+        text_draw_number(b->data.market.inventory[INVENTORY_TIMBER], '@', " ",
+            c->x_offset + 174, c->y_offset + position + 6, font);
+
+        font = building_distribution_is_good_accepted(INVENTORY_IRON, b) ? FONT_NORMAL_BLACK : FONT_NORMAL_RED;
+        image_draw(image_id + RESOURCE_IRON, c->x_offset + 252, c->y_offset + position);
+        text_draw_number(b->data.market.inventory[INVENTORY_IRON], '@', " ",
+            c->x_offset + 284, c->y_offset + position + 6, font);
+
+        font = building_distribution_is_good_accepted(INVENTORY_MARBLE, b) ? FONT_NORMAL_BLACK : FONT_NORMAL_RED;
+        image_draw(image_id + RESOURCE_MARBLE, c->x_offset + 362, c->y_offset + position);
+        text_draw_number(b->data.market.inventory[INVENTORY_MARBLE], '@', " ",
+            c->x_offset + 394, c->y_offset + position + 6, font);
+    }
+    inner_panel_draw(c->x_offset + 16, c->y_offset + 136, c->width_blocks - 2, 4);
+
+
+    window_building_draw_employment(c, 142);
+
+
     window_building_supplier_draw_foreground(c);
 }
 

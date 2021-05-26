@@ -116,6 +116,8 @@ static void (*figure_action_callbacks[])(figure *f) = {
     figure_robber_action,
     figure_looter_action,
     figure_delivery_boy_action,
+    figure_supplier_action,
+    figure_market_trader_action, // 90
     figure_supplier_action
 };
 

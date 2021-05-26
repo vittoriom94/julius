@@ -354,6 +354,8 @@ const uint8_t *lang_get_string(int group, int index)
                 return translation_for(TR_BUILDING_ROADBLOCK);
             case BUILDING_WORKCAMP:
                 return translation_for(TR_BUILDING_WORK_CAMP);
+            case BUILDING_SURVEYORS_POST:
+                return translation_for(TR_BUILDING_SURVEYORS_POST);
             case BUILDING_GRAND_TEMPLE_CERES:
                 return translation_for(TR_BUILDING_GRAND_TEMPLE_CERES);
             case BUILDING_GRAND_TEMPLE_NEPTUNE:

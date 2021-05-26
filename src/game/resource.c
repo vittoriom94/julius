@@ -78,6 +78,10 @@ int resource_to_inventory(resource_type resource)
         case RESOURCE_FURNITURE: return INVENTORY_FURNITURE;
         case RESOURCE_OIL: return INVENTORY_OIL;
         case RESOURCE_WINE: return INVENTORY_WINE;
+        case RESOURCE_CLAY: return INVENTORY_CLAY;
+        case RESOURCE_TIMBER: return INVENTORY_TIMBER;
+        case RESOURCE_IRON: return INVENTORY_IRON;
+        case RESOURCE_MARBLE: return INVENTORY_MARBLE;
         default: return INVENTORY_NONE;
     } 
 }

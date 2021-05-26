@@ -482,6 +482,7 @@ int building_has_supplier_inventory(building_type type)
 {
     return (type == BUILDING_MARKET ||
         type == BUILDING_MESS_HALL ||
+        type == BUILDING_SURVEYORS_POST ||
         type == BUILDING_CARAVANSERAI ||
         type == BUILDING_SMALL_TEMPLE_CERES ||
         type == BUILDING_LARGE_TEMPLE_CERES ||
