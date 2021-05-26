@@ -488,7 +488,7 @@ static int get_allowed_inventory_for_supplier(building_type type)
     int allowed = INVENTORY_FLAG_NONE;
     switch (type) {
         case BUILDING_MARKET:
-            return 0x000 & INVENTORY_FLAG_ALL_FOODS | INVENTORY_FLAG_ALL_GOODS;
+            return INVENTORY_FLAG_ALL_FOODS | INVENTORY_FLAG_ALL_GOODS;
         case BUILDING_SURVEYORS_POST:
             inventory_set(&allowed, INVENTORY_CLAY);
             inventory_set(&allowed, INVENTORY_TIMBER);
@@ -1160,7 +1160,7 @@ void window_building_draw_mess_hall(building_info_context *c)
 void window_building_draw_surveyors_post(building_info_context *c)
 {
     building *b = building_get(c->building_id);
-
+    c->help_id = 2;
     window_building_play_sound(c, "wavs/eng_post.wav");
     outer_panel_draw(c->x_offset, c->y_offset, c->width_blocks, c->height_blocks);
 

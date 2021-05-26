@@ -7,24 +7,6 @@
 #define MAX_DISTANCE 40
 #define MAX_GOOD 600
 
-static const int INVENTORY_SEARCH_ORDER[INVENTORY_MAX] = {
-    INVENTORY_CLAY, INVENTORY_TIMBER, INVENTORY_IRON, INVENTORY_MARBLE
-};
-
-int building_surveyors_post_get_max_goods_stock(building* surveyors_post)
-{
-    int max_stock = 0;
-    if (surveyors_post->id > 0 && surveyors_post->type == BUILDING_SURVEYORS_POST) {
-        for (int i = INVENTORY_MIN_FOOD; i < INVENTORY_MAX_FOOD; i++) { 
-            int stock = surveyors_post->data.market.inventory[i];
-            if (stock > max_stock) {
-                max_stock = stock;
-            }
-        }
-    }
-    return max_stock;
-}
-
 int building_surveyors_post_get_needed_inventory(building* surveyors_post)
 {
     int needed = INVENTORY_FLAG_NONE;
@@ -56,9 +38,9 @@ int building_surveyors_post_fetch_inventory(building* surveyors_post, inventory_
     if (fetch_inventory != INVENTORY_NONE) {
         return fetch_inventory;
     }
-    // All items well stocked: pick food below threshold
+    // All items well stocked: pick raw below threshold
     fetch_inventory = building_distribution_fetch(surveyors_post, info, MAX_GOOD, 0,
-        needed_inventory & INVENTORY_FLAG_ALL_FOODS); // First 4 slots
+        needed_inventory & INVENTORY_FLAG_ALL_RAW);
     if (fetch_inventory != INVENTORY_NONE) {
         return fetch_inventory;
     }
