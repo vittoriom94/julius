@@ -121,10 +121,16 @@ static int take_resource_from_generic_building(figure *f, int building_id)
 static int take_resource_from_warehouse(figure *f, int warehouse_id, int max_amount)
 {
     int lighthouse_supplier = f->type == FIGURE_LIGHTHOUSE_SUPPLIER;
+    int surveyors_post_supplier = f->type == FIGURE_SURVEYORS_POST_SUPPLIER;
     int resource;
     if (lighthouse_supplier) {
         resource = f->collecting_item_id;
         if (f->collecting_item_id < RESOURCE_MIN_RAW || f->collecting_item_id >= RESOURCE_MAX_RAW) {
+            return 0;
+        }
+    } else if (surveyors_post_supplier){
+        resource = resource_from_inventory(f->collecting_item_id);
+        if (f->collecting_item_id < INVENTORY_MIN_RAW || f->collecting_item_id >= INVENTORY_MAX_RAW) {
             return 0;
         }
     } else {
@@ -284,7 +290,7 @@ void figure_supplier_action(figure *f)
             f->image_id = assets_get_image_id(assets_get_group_id("Areldir", "Entertainment"), "Barkeep NE 01") + dir * 12 +
                 f->image_offset;
         }
-    } else if (f->type == FIGURE_LIGHTHOUSE_SUPPLIER || f->type == FIGURE_CARAVANSERAI_SUPPLIER) {
+    } else if (f->type == FIGURE_LIGHTHOUSE_SUPPLIER || f->type == FIGURE_CARAVANSERAI_SUPPLIER || f->type == FIGURE_SURVEYORS_POST_SUPPLIER) {
         int dir = figure_image_normalize_direction(f->direction < 8 ? f->direction : f->previous_tile_direction);
         if (f->action_state == FIGURE_ACTION_149_CORPSE) {
             f->image_id = assets_get_image_id(assets_get_group_id("Areldir", "Slave_Walker"),
@@ -314,7 +320,7 @@ void figure_delivery_boy_action(figure *f)
                 leader->type == FIGURE_MESS_HALL_SUPPLIER || leader->type == FIGURE_MESS_HALL_COLLECTOR ||
                 leader->type == FIGURE_PRIEST_SUPPLIER || leader->type == FIGURE_PRIEST ||
                 leader->type == FIGURE_BARKEEP_SUPPLIER || leader->type == FIGURE_CARAVANSERAI_SUPPLIER ||
-                leader->type == FIGURE_CARAVANSERAI_COLLECTOR) {
+                leader->type == FIGURE_CARAVANSERAI_COLLECTOR || leader->type == FIGURE_SURVEYORS_POST_SUPPLIER) {
                 figure_movement_follow_ticks(f, 1);
             } else {
                 f->state = FIGURE_STATE_DEAD;

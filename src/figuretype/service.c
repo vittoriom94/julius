@@ -308,6 +308,27 @@ void figure_market_trader_action(figure *f)
     figure_image_update(f, image_group(GROUP_FIGURE_MARKET_LADY));
 }
 
+void figure_surveyors_post_action(figure *f)
+{
+    f->terrain_usage = TERRAIN_USAGE_ROADS;
+    f->use_cross_country = 0;
+    f->max_roam_length = 384;
+    building *market = building_get(f->building_id);
+    if (market->state != BUILDING_STATE_IN_USE || market->figure_id != f->id) {
+        f->state = FIGURE_STATE_DEAD;
+    }
+    figure_image_increase_offset(f, 12);
+    roamer_action(f, 1);
+    int dir = figure_image_normalize_direction(f->direction < 8 ? f->direction : f->previous_tile_direction);
+    if (f->action_state == FIGURE_ACTION_149_CORPSE) {
+        f->image_id = assets_get_image_id(assets_get_group_id("Areldir", "Slave_Walker"),
+                                            "Slave death 01") + figure_image_corpse_offset(f);
+    } else {
+        f->image_id = assets_get_image_id(assets_get_group_id("Areldir", "Slave_Walker"),
+                                            "Slave NE 01") + dir * 12 + f->image_offset;
+    }
+}
+
 void figure_tax_collector_action(figure *f)
 {
     building *b = building_get(f->building_id);

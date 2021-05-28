@@ -410,6 +410,29 @@ static int provide_market_goods(int market_building_id, int x, int y)
     return serviced;
 }
 
+static int provide_surveyors_post_goods(int market_building_id, int x, int y)
+{
+    int serviced = 0;
+    building *surveyors_post = building_get(market_building_id);
+    int x_min, y_min, x_max, y_max;
+    map_grid_get_area(x, y, 1, 2, &x_min, &y_min, &x_max, &y_max);
+    for (int yy = y_min; yy <= y_max; yy++) {
+        for (int xx = x_min; xx <= x_max; xx++) {
+            int grid_offset = map_grid_offset(xx, yy);
+            int building_id = map_building_at(grid_offset);
+            if (building_id) {
+                building *b = building_get(building_id);
+                if (b->house_size && b->house_population > 0) {
+                    //distribute_surveyors_post_resources(b, surveyors_post);
+                    serviced++;
+                }
+
+            }
+        }
+    }
+    return serviced;
+}
+
 static int provide_venus_wine_to_taverns(int market_building_id, int x, int y)
 {
     int serviced = 0;
@@ -495,9 +518,16 @@ int figure_service_provide_coverage(figure *f)
         case FIGURE_MARKET_TRADER:
             houses_serviced = provide_market_goods(f->building_id, x, y);
             break;
+        case FIGURE_SURVEYORS_POST_TRADER:
+            houses_serviced = provide_surveyors_post_goods(f->building_id, x, y);
         case FIGURE_MARKET_SUPPLIER:
             if (!config_get(CONFIG_GP_CH_NO_SUPPLIER_DISTRIBUTION)) {
                 houses_serviced = provide_market_goods(f->building_id, x, y);
+            }
+            break;
+        case FIGURE_SURVEYORS_POST_SUPPLIER:
+            if (!config_get(CONFIG_GP_CH_NO_SUPPLIER_DISTRIBUTION)) {
+                houses_serviced = provide_surveyors_post_goods(f->building_id, x, y);
             }
             break;
         case FIGURE_BATHHOUSE_WORKER:

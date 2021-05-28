@@ -493,6 +493,22 @@ const city_overlay *city_overlay_for_sentiment(void)
     };
     return &overlay;
 }
+const city_overlay *city_overlay_for_evolution(void)
+{
+    static city_overlay overlay = {
+        OVERLAY_EVOLUTION,
+        COLUMN_COLOR_GREEN,
+        show_building_sentiment,
+        show_figure_none,
+        get_column_height_none,
+        get_tooltip_sentiment,
+        0,
+        0,
+        0,
+        draw_sentiment_values
+    };
+    return &overlay;
+}
 
 static int terrain_on_desirability_overlay(void)
 {

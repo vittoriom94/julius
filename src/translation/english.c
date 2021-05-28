@@ -102,6 +102,7 @@ static translation_string all_strings[] = {
         "Your system does not have enough graphics memory to enable city zoom.\n"
         "City zoom has not been enabled."},
     {TR_CONFIG_SHOW_MAX_POSSIBLE_PROSPERITY, "Display max attainable prosperity rating with current housing"},
+    {TR_CONFIG_HOUSES_NEED_RESOURCES_TO_EVOLVE, "Houses need resources to evolve to the next step"},
     {TR_HOTKEY_TITLE, "Augustus hotkey configuration"},
     {TR_HOTKEY_LABEL, "Hotkey"},
     {TR_HOTKEY_ALTERNATIVE_LABEL, "Alternative"},
@@ -662,6 +663,7 @@ static translation_string all_strings[] = {
     {TR_FIGURE_TYPE_LOOTER, "Looter" },
     {TR_FIGURE_TYPE_ROBBER, "Robber" },
     {TR_OVERLAY_SENTIMENT, "Sentiment" },
+    {TR_OVERLAY_EVOLUTION, "Evolution" },
     {TR_WINDOW_ADVISOR_ENTERTAINMENT_NO_COVERAGE, "Nobody" },
     {TR_WINDOW_ADVISOR_ENTERTAINMENT_FULL_COVERAGE, "Everyone" },
     {TR_TOOLTIP_ADVISOR_TRADE_LAND_POLICY, "Select a land trade policy"},
@@ -678,6 +680,8 @@ static translation_string all_strings[] = {
     {TR_ADVISOR_CHIEF_NO_IMMIGRATION_SQUALOR, "Squalid housing and slums prevent immigration"},
     {TR_FIGURE_TYPE_LIGHTHOUSE_SUPPLIER, "Lighthouse keeper"},
     {TR_WINDOW_GAMES_NO_WATER_ACCESS, "Venue doesn't have access to a reservoir."},
+    {TR_FIGURE_TYPE_SURVEYORS_POST_TRADER, "Surveyor"},
+    {TR_FIGURE_TYPE_SURVEYORS_POST_SUPPLIER, "Surveyor's assistant"}
 };
 
 void translation_english(const translation_string **strings, int *num_strings)

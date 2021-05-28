@@ -10,6 +10,7 @@
 #include "building/mess_hall.h"
 #include "building/model.h"
 #include "building/monument.h"
+#include "building/surveyors_post.h"
 #include "building/tavern.h"
 #include "building/temple.h"
 #include "building/warehouse.h"
@@ -1562,7 +1563,7 @@ static void spawn_surveyors_post_supplier(building *b, int x, int y)
         return;
     }
     //building_distribution_update_demands(b);
-    int dst_building_id = 0; //building_market_get_storage_destination(b);
+    int dst_building_id = building_surveyors_post_get_storage_destination(b);
     if (dst_building_id == 0) {
         return;
     }

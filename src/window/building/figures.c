@@ -41,13 +41,14 @@ static const int FIGURE_TYPE_TO_BIG_FIGURE_IMAGE[] = {
     8, 8, 34, 39, 33, 43, 27, 48, 63, 8, //50-59
     8, 8, 8, 8, 53, 8, 38, 62, 54, 55, //60-69
     56, 8, 8, 58, 0, 7, 50, 0, 14, 3, //70-79
-    3, 58, 50, 0, 0, 3, 15, 15, 0, 3 //80-89
+    3, 58, 50, 0, 0, 3, 15, 15, 0, 3, //80-89
+    0,  0,  0, 0, 0, 0,  0,  0, 0, 0 //90-99
 };
 // Starting with FIGURE_WORK_CAMP_WORKER = 73,
 static const int NEW_FIGURE_TYPES[] = {
     TR_FIGURE_TYPE_WORK_CAMP_WORKER,TR_FIGURE_TYPE_WORK_CAMP_SLAVE,TR_FIGURE_TYPE_WORK_CAMP_ARCHITECT,TR_FIGURE_TYPE_MESS_HALL_SUPPLIER,TR_FIGURE_TYPE_MESS_HALL_COLLECTOR,
     TR_FIGURE_TYPE_PRIEST_SUPPLIER, TR_FIGURE_TYPE_BARKEEP, TR_FIGURE_TYPE_BARKEEP_SUPPLIER, TR_FIGURE_TYPE_TOURIST, TR_FIGURE_TYPE_WATCHMAN, 0, 0, TR_FIGURE_TYPE_CARAVANSERAI_SUPPLIER,
-    TR_FIGURE_TYPE_ROBBER, TR_FIGURE_TYPE_LOOTER, TR_FIGURE_TYPE_CARAVANSERAI_COLLECTOR, TR_FIGURE_TYPE_LIGHTHOUSE_SUPPLIER
+    TR_FIGURE_TYPE_ROBBER, TR_FIGURE_TYPE_LOOTER, TR_FIGURE_TYPE_CARAVANSERAI_COLLECTOR, TR_FIGURE_TYPE_LIGHTHOUSE_SUPPLIER, TR_FIGURE_TYPE_SURVEYORS_POST_TRADER, TR_FIGURE_TYPE_SURVEYORS_POST_SUPPLIER
 };
 
 static generic_button figure_buttons[] = {
@@ -73,6 +74,8 @@ static int big_people_image(figure_type type)
         case FIGURE_CARAVANSERAI_SUPPLIER:
         case FIGURE_CARAVANSERAI_COLLECTOR:
         case FIGURE_LIGHTHOUSE_SUPPLIER:
+        case FIGURE_SURVEYORS_POST_SUPPLIER:
+        case FIGURE_SURVEYORS_POST_TRADER:
             return assets_get_image_id(assets_get_group_id("Areldir", "Slave_Walker"), "Slave Portrait");
             break;
         case FIGURE_MESS_HALL_COLLECTOR:
@@ -360,7 +363,7 @@ static void draw_supplier(building_info_context *c, figure *f)
     int width = 0;
     if (f->type == FIGURE_MESS_HALL_SUPPLIER || f->type == FIGURE_PRIEST_SUPPLIER ||
         f->type == FIGURE_BARKEEP_SUPPLIER || f->type == FIGURE_CARAVANSERAI_SUPPLIER ||
-        f->type == FIGURE_LIGHTHOUSE_SUPPLIER) {
+        f->type == FIGURE_LIGHTHOUSE_SUPPLIER || f->type == FIGURE_SURVEYORS_POST_SUPPLIER) {
         int relative_id = f->type - FIGURE_NEW_TYPES;
         width = text_draw(translation_for(NEW_FIGURE_TYPES[relative_id]), c->x_offset + 92, c->y_offset + 139, FONT_SMALL_BLACK, 0);
     } else {
@@ -470,7 +473,7 @@ static void draw_figure_info(building_info_context *c, int figure_id)
         draw_cartpusher(c, f);
     } else if (type == FIGURE_MARKET_SUPPLIER || type == FIGURE_MESS_HALL_SUPPLIER ||
         type == FIGURE_PRIEST_SUPPLIER || type == FIGURE_BARKEEP_SUPPLIER ||
-        type == FIGURE_CARAVANSERAI_SUPPLIER || type == FIGURE_LIGHTHOUSE_SUPPLIER) {
+        type == FIGURE_CARAVANSERAI_SUPPLIER || type == FIGURE_LIGHTHOUSE_SUPPLIER || type == FIGURE_SURVEYORS_POST_SUPPLIER) {
         draw_supplier(c, f);
     } else if (type == FIGURE_WORK_CAMP_WORKER || type == FIGURE_WORK_CAMP_SLAVE) {
         draw_monument_worker(c, f);

@@ -102,6 +102,8 @@ static const city_overlay *get_city_overlay(void)
             return city_overlay_for_water();
         case OVERLAY_SENTIMENT:
             return city_overlay_for_sentiment();
+        case OVERLAY_EVOLUTION:
+            return city_overlay_for_evolution();
         case OVERLAY_DESIRABILITY:
             return city_overlay_for_desirability();
         case OVERLAY_ROADS:

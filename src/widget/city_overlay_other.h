@@ -13,6 +13,8 @@ const city_overlay *city_overlay_for_water(void);
 
 const city_overlay *city_overlay_for_sentiment(void);
 
+const city_overlay *city_overlay_for_evolution(void);
+
 const city_overlay *city_overlay_for_desirability(void);
 
 const city_overlay *city_overlay_for_roads(void);

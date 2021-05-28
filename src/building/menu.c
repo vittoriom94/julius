@@ -83,6 +83,9 @@ static void enable_if_allowed(int *enabled, building_type menu_building_type, bu
         if (type == BUILDING_MENU_SMALL_TEMPLES || type == BUILDING_MENU_LARGE_TEMPLES) {
             enable_cycling_temples_if_allowed(type);
         }
+        if(type == BUILDING_SURVEYORS_POST && !config_get(CONFIG_GP_CH_HOUSES_NEED_RESOURCES_TO_EVOLVE)){
+            *enabled = 0;
+        }
     }
 }
 
